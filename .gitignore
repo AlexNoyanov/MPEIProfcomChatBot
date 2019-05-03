@@ -24,6 +24,7 @@ hs_err_pid*
 
 *.pdf
 *.jpg
+*.properties
 
 
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
