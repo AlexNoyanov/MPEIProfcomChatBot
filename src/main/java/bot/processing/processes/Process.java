@@ -1,4 +1,4 @@
-package bot.processing;
+package bot.processing.processes;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
 

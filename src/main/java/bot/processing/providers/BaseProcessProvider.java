@@ -1,7 +1,7 @@
 package bot.processing.providers;
 
 import bot.UserSession;
-import bot.processing.DocumentChoosingProcess;
+import bot.processing.processes.DocumentChoosingProcess;
 
 public class BaseProcessProvider {
     protected UserSession userSession;

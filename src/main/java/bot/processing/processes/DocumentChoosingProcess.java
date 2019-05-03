@@ -1,4 +1,4 @@
-package bot.processing;
+package bot.processing.processes;
 
 import bot.ChatBot;
 import bot.UserSession;
@@ -22,7 +22,7 @@ public class DocumentChoosingProcess implements Process {
         this.userSession = userSession;
         documents = ListsUtil.getList(DOCUMENTS);
         keyboardProvider = new ListKeyboardProvider(documents, DOCUMENTS);
-        curState = "sendKeyboard";
+        curState = "sendQuestion";
     }
 
     private void handleDocumentChoosing(String documentIndex) {
@@ -66,7 +66,7 @@ public class DocumentChoosingProcess implements Process {
     @Override
     public void sendResponse(Update update) {
         switch (curState) {
-            case "sendKeyboard": {
+            case "sendQuestion": {
                 ChatBot.sendMessage(userSession.getChatId(),
                         "Выберите документ для заполнения:",
                         keyboardProvider.getKeyboard());
