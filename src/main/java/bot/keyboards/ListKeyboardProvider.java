@@ -22,7 +22,7 @@ public class ListKeyboardProvider extends InlineKeyboardProvider {
 
     private void createKeyboard() {
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-        for(int i = curIndex; i < buttonTexts.size(); i++) {
+        for(int i = curIndex; i < Math.min(buttonTexts.size(), curIndex + 4); i++) {
             keyboard.add(createRow(createButton(buttonTexts.get(i),
                                             listName + " " + i)));
         }

@@ -31,7 +31,7 @@ public class EditingProcess implements Process {
         BaseProcessProvider processProvider = new BaseProcessProvider(userSession);
 
         switch (fields.get(index)) {
-            case "ФИО": {
+            case "\uFEFFФИО": {
                 processProvider.addFillingFIOProcess();
                 break;
             }
@@ -93,14 +93,14 @@ public class EditingProcess implements Process {
             }
             case "sendPrevKeyboard": {
                 ChatBot.editMessageReplyMarkup(userSession.getChatId(),
-                        update.getMessage().getMessageId(),
+                        update.getCallbackQuery().getMessage().getMessageId(),
                         update.getCallbackQuery().getInlineMessageId(),
                         keyboardProvider.getPrevKeyboard());
                 break;
             }
             case "sendNextKeyboard": {
                 ChatBot.editMessageReplyMarkup(userSession.getChatId(),
-                        update.getMessage().getMessageId(),
+                        update.getCallbackQuery().getMessage().getMessageId(),
                         update.getCallbackQuery().getInlineMessageId(),
                         keyboardProvider.getNextKeyboard());
                 break;

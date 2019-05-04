@@ -10,7 +10,7 @@ import java.util.Locale;
 import java.util.Queue;
 
 public class BaseProcessProvider {
-    protected static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("\"dd\" MMMM yyyy", new Locale("ru"));
+    protected static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("\"dd\" MMMM yyyy г.", new Locale("ru"));
 
     protected UserSession userSession;
     protected Queue<Process> processQueue;

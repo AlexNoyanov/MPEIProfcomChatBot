@@ -6,6 +6,7 @@ import bot.keyboards.InlineKeyboardProvider;
 import bot.processing.providers.BaseProcessProvider;
 import dbService.dao.DAOContext;
 import dbService.dao.StudentsDAO;
+import dbService.entity.Student;
 import org.telegram.telegrambots.meta.api.methods.ActionType;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -68,13 +69,17 @@ public class SendingPreviewProcess implements Process {
                     }
                 };
                 StudentsDAO studentsDAO = DAOContext.getStudentsDAO();
-                studentsDAO.insert(userSession.getPersonalData());
+                Student dataInDataBase = studentsDAO.getByChatId(userSession.getChatId());
+                if(dataInDataBase == null)
+                    studentsDAO.insert(userSession.getPersonalData());
+                else
+                    studentsDAO.update(userSession.getPersonalData());
 
                 Document document = userSession.getDocument();
-                File documentFile = document.saveToDirectory();
+                File documentFile = document.saveToDirectory(userSession.getCurDocumentName() + ".pdf");
                 ChatBot.sendDocument(userSession.getChatId(), "Готово!",
                         documentFile, keyboardProvider.getKeyboard());
-
+                documentFile.delete();
             }
         }
     }

@@ -74,14 +74,14 @@ public class DocumentChoosingProcess implements Process {
             }
             case "sendPrevKeyboard": {
                 ChatBot.editMessageReplyMarkup(userSession.getChatId(),
-                        update.getMessage().getMessageId(),
+                        update.getCallbackQuery().getMessage().getMessageId(),
                         update.getCallbackQuery().getInlineMessageId(),
                         keyboardProvider.getPrevKeyboard());
                 break;
             }
             case "sendNextKeyboard": {
                 ChatBot.editMessageReplyMarkup(userSession.getChatId(),
-                        update.getMessage().getMessageId(),
+                        update.getCallbackQuery().getMessage().getMessageId(),
                         update.getCallbackQuery().getInlineMessageId(),
                         keyboardProvider.getNextKeyboard());
                 break;

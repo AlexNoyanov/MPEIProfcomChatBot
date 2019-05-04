@@ -5,7 +5,7 @@ import java.nio.file.FileSystem;
 import java.util.*;
 
 public class ListsUtil {
-    private final String LISTS_FOLDER = File.separator + "src" +
+    private final String LISTS_FOLDER = "src" +
             File.separator + "main" + File.separator + "resources" +
             File.separator + "lists";
 

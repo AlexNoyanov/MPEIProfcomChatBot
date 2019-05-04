@@ -137,6 +137,10 @@ public class ChatBot extends TelegramLongPollingBot {
         }
     }
 
+    public static ChatBot getInstance() {
+        return bot;
+    }
+
     @Override
     public String getBotUsername() {
         return BOT_NAME;

@@ -2,10 +2,12 @@ package pdf;
 
 import com.itextpdf.forms.PdfAcroForm;
 import com.itextpdf.forms.fields.PdfFormField;
+import com.itextpdf.io.font.PdfEncodings;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import util.RandomFileNameGenerator;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,12 +16,28 @@ import java.io.IOException;
 import java.util.Map;
 
 public class Document {
-    private static final String TEMP_DOCUMENTS_DIRECTORY = File.separator + "src" +
+    private static final String TEMP_DOCUMENTS_DIRECTORY = "src" +
             File.separator + "main" + File.separator + "resources" +
             File.separator + "tempDocuments" + File.separator;
-    private static RandomFileNameGenerator fileNameGenerator;
+
+    private static final String FONT_FILE = "src" +
+            File.separator + "main" + File.separator + "resources" +
+            File.separator + "fonts" + File.separator + "FreeSans.ttf";
+
+    private static final PdfFont FONT;
+//    private static RandomFileNameGenerator fileNameGenerator;
+//    static {
+//        fileNameGenerator = new RandomFileNameGenerator();
+//    }
+
     static {
-        fileNameGenerator = new RandomFileNameGenerator();
+        try {
+            FONT = PdfFontFactory.createFont(FONT_FILE, PdfEncodings.IDENTITY_H, true);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
     private byte[] serializedDoc;
@@ -61,7 +79,9 @@ public class Document {
     }
 
     public void setField(String fieldName, String value) {
-        fields.get(fieldName).setValue(value).setReadOnly(true);
+        fields.get(fieldName).setFont(FONT)
+                .setValue(value)
+                .setReadOnly(true);
     }
 
     public String getFieldValue(String field) {
@@ -79,10 +99,9 @@ public class Document {
         return serializedDoc;
     }
 
-    public File saveToDirectory() {
+    public File saveToDirectory(String fileName) {
         getSerializedDocument();
-        File result = new File(TEMP_DOCUMENTS_DIRECTORY +
-                      fileNameGenerator.getRandomName("pdf"));
+        File result = new File(TEMP_DOCUMENTS_DIRECTORY + fileName);
         try {
             PdfWriter writer = new PdfWriter(result);
             writer.write(serializedDoc);

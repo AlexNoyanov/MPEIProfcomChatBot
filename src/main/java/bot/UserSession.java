@@ -52,12 +52,12 @@ public class UserSession {
     public void executeCurrentProcess(Update update) {
         if(update.hasMessage()) {
             Message message = update.getMessage();
-            if(message.getText().equals("//создать")) {
+            if(message.getText().equals("Заполнить заявление")) {
                 processQueue.clear();
                 BaseProcessProvider processProvider = new BaseProcessProvider(this);
                 processProvider.addDocumentChoosingProcess();
             }
-            else if(message.getText().equals("//помощь")) {
+            else if(message.getText().equals("Помощь")) {
                 //send help information TO DO
             }
         }

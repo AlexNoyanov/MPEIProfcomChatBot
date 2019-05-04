@@ -8,7 +8,7 @@ import java.io.File;
 import java.time.LocalDate;
 
 public class MaterialAidProcessProvider extends BaseProcessProvider {
-    private static final String TEMPLATE_PATH = File.separator + "src" +
+    private static final String TEMPLATE_PATH = "src" +
             File.separator + "main" + File.separator + "resources" +
             File.separator + "templates" + File.separator + "materialAid.pdf";
 
