@@ -1,5 +1,6 @@
 package bot;
 
+import bot.keyboards.ReplyKeyboardProvider;
 import bot.processing.processes.Process;
 import bot.processing.providers.BaseProcessProvider;
 import dbService.dao.DAOContext;
@@ -7,9 +8,11 @@ import dbService.dao.StudentsDAO;
 import dbService.entity.Student;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import pdf.Document;
 
 import java.util.ArrayDeque;
+import java.util.List;
 import java.util.Queue;
 
 public class UserSession {
@@ -17,6 +20,7 @@ public class UserSession {
     private Document document;
     private Student personalData;
     private Queue<Process> processQueue;
+    private String curDocumentName;
 
     public UserSession(String chatId) {
         this.chatId = chatId;
@@ -24,8 +28,25 @@ public class UserSession {
 
         StudentsDAO studentsDAO = DAOContext.getStudentsDAO();
         personalData = studentsDAO.getByChatId(chatId);
-        if(personalData == null)
+        if(personalData == null) {
             personalData = new Student();
+            personalData.setChatId(chatId);
+        }
+
+        ReplyKeyboardProvider keyboardProvider = new ReplyKeyboardProvider() {
+            @Override
+            public ReplyKeyboardMarkup getKeyboard() {
+                ReplyKeyboardMarkup replyKeyboard = new ReplyKeyboardMarkup();
+                replyKeyboard.setSelective(true)
+                        .setResizeKeyboard(true)
+                        .setOneTimeKeyboard(false)
+                        .setKeyboard(List.of(createRow(createButton("Заполнить заявление"),
+                                                       createButton("Помощь"))));
+                return replyKeyboard;
+            }
+        };
+        ChatBot.sendMessage(chatId, "Добро пожаловать",
+                keyboardProvider.getKeyboard());
     }
 
     public void executeCurrentProcess(Update update) {
@@ -85,5 +106,13 @@ public class UserSession {
 
     public void setProcessQueue(Queue<Process> processQueue) {
         this.processQueue = processQueue;
+    }
+
+    public String getCurDocumentName() {
+        return curDocumentName;
+    }
+
+    public void setCurDocumentName(String curDocumentName) {
+        this.curDocumentName = curDocumentName;
     }
 }

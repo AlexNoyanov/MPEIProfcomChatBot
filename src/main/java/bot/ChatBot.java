@@ -1,6 +1,9 @@
 package bot;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.ActionType;
+import org.telegram.telegrambots.meta.api.methods.send.SendChatAction;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -8,6 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -88,6 +92,45 @@ public class ChatBot extends TelegramLongPollingBot {
                 .setReplyMarkup(keyboard);
         try {
             bot.execute(editMessage);
+        }
+        catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void sendChatAction(String chatId, ActionType actionType) {
+        SendChatAction action = new SendChatAction();
+        action.setChatId(chatId)
+                .setAction(actionType);
+        try {
+            bot.execute(action);
+        }
+        catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void sendDocument(String chatId, String message, File documentFile) {
+        SendDocument document = new SendDocument();
+        document.setChatId(chatId)
+                .setCaption(message)
+                .setDocument(documentFile);
+        try {
+            bot.execute(document);
+        }
+        catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void sendDocument(String chatId, String message, File documentFile, ReplyKeyboard keyboard) {
+        SendDocument document = new SendDocument();
+        document.setChatId(chatId)
+                .setCaption(message)
+                .setDocument(documentFile)
+                .setReplyMarkup(keyboard);
+        try {
+            bot.execute(document);
         }
         catch (TelegramApiException e) {
             e.printStackTrace();

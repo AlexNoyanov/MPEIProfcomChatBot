@@ -5,19 +5,41 @@ import com.itextpdf.forms.fields.PdfFormField;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import util.RandomFileNameGenerator;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
 public class Document {
+    private static final String TEMP_DOCUMENTS_DIRECTORY = File.separator + "src" +
+            File.separator + "main" + File.separator + "resources" +
+            File.separator + "tempDocuments" + File.separator;
+    private static RandomFileNameGenerator fileNameGenerator;
+    static {
+        fileNameGenerator = new RandomFileNameGenerator();
+    }
+
     private byte[] serializedDoc;
     private PdfDocument pdfDocument;
     private ByteArrayOutputStream outputStream;
     private PdfAcroForm acroForm;
     private Map<String, PdfFormField> fields;
 
+    public Document(String fileName) {
+        outputStream = new ByteArrayOutputStream();
+        try {
+            pdfDocument = new PdfDocument(new PdfReader(fileName),
+                                            new PdfWriter(outputStream));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        acroForm = PdfAcroForm.getAcroForm(pdfDocument, true);
+        fields = acroForm.getFormFields();
+    }
 
     public Document(byte[] serializedDoc) {
         initialize(serializedDoc);
@@ -55,5 +77,20 @@ public class Document {
         serializedDoc = outputStream.toByteArray();
         initialize(serializedDoc);
         return serializedDoc;
+    }
+
+    public File saveToDirectory() {
+        getSerializedDocument();
+        File result = new File(TEMP_DOCUMENTS_DIRECTORY +
+                      fileNameGenerator.getRandomName("pdf"));
+        try {
+            PdfWriter writer = new PdfWriter(result);
+            writer.write(serializedDoc);
+            writer.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

@@ -7,7 +7,7 @@ import java.util.*;
 public class ListsUtil {
     private final String LISTS_FOLDER = File.separator + "src" +
             File.separator + "main" + File.separator + "resources" +
-            File.separator + "Lists";
+            File.separator + "lists";
 
     private Map<String, List<String>> lists;
 
