@@ -8,7 +8,11 @@ import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -111,5 +115,21 @@ public class Document {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public File saveDocumentAsImage(String fileName) {
+        getSerializedDocument();
+        File imageFile = new File(TEMP_DOCUMENTS_DIRECTORY + fileName);
+        try {
+            PDDocument tempDocument = PDDocument.load(serializedDoc);
+            PDFRenderer pdfRenderer = new PDFRenderer(tempDocument);
+            BufferedImage pageImage = pdfRenderer.renderImageWithDPI(0, 300);
+            ImageIO.write(pageImage, "JPEG", imageFile);
+            tempDocument.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return imageFile;
     }
 }

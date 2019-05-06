@@ -2,8 +2,14 @@ package bot.processing.processes;
 
 import bot.ChatBot;
 import bot.UserSession;
+import dbService.dao.DAOContext;
+import dbService.dao.StudentsDAO;
+import dbService.entity.Student;
 import org.telegram.telegrambots.meta.api.methods.ActionType;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import pdf.Document;
+
+import java.io.File;
 
 public class SendingDocumentProcess implements Process {
     private UserSession userSession;
@@ -11,7 +17,6 @@ public class SendingDocumentProcess implements Process {
 
     public SendingDocumentProcess(UserSession userSession) {
         this.userSession = userSession;
-        curState = "finished";
     }
 
     @Override
@@ -22,8 +27,8 @@ public class SendingDocumentProcess implements Process {
 
     @Override
     public void sendResponse(Update update) {
-        ChatBot.sendChatAction(userSession.getChatId(), ActionType.UPLOADDOCUMENT);
-        //send document here TO DO
+        curState = "finished";
+
     }
 
     @Override

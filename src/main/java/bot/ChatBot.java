@@ -5,6 +5,7 @@ import org.telegram.telegrambots.meta.api.methods.ActionType;
 import org.telegram.telegrambots.meta.api.methods.send.SendChatAction;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -131,6 +132,20 @@ public class ChatBot extends TelegramLongPollingBot {
                 .setReplyMarkup(keyboard);
         try {
             bot.execute(document);
+        }
+        catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void sendPhoto(String chatId, String message, File imageFile, ReplyKeyboard keyboard) {
+        SendPhoto photo = new SendPhoto();
+        photo.setChatId(chatId)
+                .setCaption(message)
+                .setPhoto(imageFile)
+                .setReplyMarkup(keyboard);
+        try {
+            bot.execute(photo);
         }
         catch (TelegramApiException e) {
             e.printStackTrace();
